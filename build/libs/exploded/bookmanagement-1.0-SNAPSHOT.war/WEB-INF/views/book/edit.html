@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#editSmartphoneForm').submit(function (event) {
+                var category = $('#category').val();
+                var name = $('#model').val();
+                var author = $('#price').val();
+                var json = {"category":category, "name":name, "author":author};
+                $.ajax({
+                    url: $("#editSmartphoneForm").attr("action"),
+                    data: JSON.stringify(json),
+                    type: "POST",
+
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Accept", "application/json");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                    },
+                    success: function (book) {
+                        var respContent = "";
+
+                        respContent += "<span class='success'>book was edited: [";
+                        respContent += book.category.name + " : ";
+                        respContent += book.name + " : ";
+                        respContent += book.author + "]</span>";
+                        $("#bookFromResponse").html(respContent);
+                    }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+    <h1>Edit book</h1>
+    <div>
+        <p>Here you can edit book info:</p>
+        <div id="bookFromResponse"></div>
+    </div>
+    <form id="editBookForm" th:object="${book}">
+        <table>
+            <tbody>
+            <tr>
+                <td>Category:</td>
+                <td>
+                    <select id="category" th:field="*{category}">
+                        <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><input th:field="*{name}" /></td>
+            </tr>
+            <tr>
+                <td>Author:</td>
+                <td><input th:field="*{author}"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Edit" /></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <a th:href="@{/book/list}">List</a>
+</div>
+</body>
+</html>

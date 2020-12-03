@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function (){-->
+<!--            $('#newBookForm').submit(function (event){-->
+<!--                var category = $('#category').val();-->
+<!--                var name = $('#name').val();-->
+<!--                var author = $('#author').val();-->
+<!--                var json = {"category": category ,"name" : name, "author": author};-->
+<!--                $.ajax({-->
+<!--                    headers:{-->
+<!--                        'Accept': 'application/json',-->
+<!--                        'Content-Type': 'application/json'-->
+<!--                    },-->
+<!--                    type: "POST",-->
+<!--                    data: JSON.stringify(json),-->
+<!--                    url: "/book/createNewBook",-->
+<!--                    success: function (book){-->
+<!--                        var respContent="";-->
+<!--                        respContent +="<span class='success'>Book was created: [";-->
+<!--                        respContent += book.name + " : ";-->
+<!--                        respContent += book.author + " : " ;-->
+<!--                        respContent += book.category + "]</span>"-->
+<!--                        $("#BookFromResponse").html(respContent);-->
+<!--                    }-->
+<!--                });-->
+<!--                event.preventDefault();-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#newBookForm').submit(function(event) { // là funtion được gọi khi submit from có id là newSmartphoneForm
+                var category = $('#category').val();
+                var name = $('#name').val();
+                var author = $('#author').val();// thực hiện lấy dữ liệu từ các input tương ứng
+                var json = { "category" : category, "name" : name, "author": author};// gán các biến vào các trường tương ứng của đối tượng json.
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type : "POST", // method
+                    data: JSON.stringify(json),
+                    url: "/smartphones/createNewPhone", //link này ở RequestMapping
+                    success: function(book) { // reponse này ở requestBody
+                        var respContent = "";
+                        respContent += "<span class='success'>Book was created: [";
+                        respContent += book.category.name + " : ";
+                        respContent += book.name + " : " ;
+                        respContent += book.author + "]</span>"
+                        $("#BookFromResponse").html(respContent);
+                    }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+    <h1>Create new Book</h1>
+    <div>
+        <p>Here you can create new Book:</p>
+        <div id="BookFromResponse"></div>
+    </div>
+    <form id="newBookForm" th:object="${book}">
+        <table>
+            <tbody>
+            <tr>
+                <td>Category:</td>
+                <td><select  th:field="*{category}">
+                    <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><input th:field="*{name}" /></td>
+            </tr>
+            <tr>
+                <td>Author:</td>
+                <td><input th:field="*{author}" /></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="create" /></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <a th:href="@{/book/list}">List</a>
+</div>
+</body>
+</html>
