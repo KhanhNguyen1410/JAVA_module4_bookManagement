@@ -6,13 +6,13 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#editSmartphoneForm').submit(function (event) {
+            $('#editBookForm').submit(function (event) {
                 var category = $('#category').val();
-                var name = $('#model').val();
-                var author = $('#price').val();
-                var json = {"category":category, "name":name, "author":author};
+                var name = $('#name').val();
+                var author = $('#author').val();
+                var json = {"category":{"id":category, "name": ""}, "name":name, "author":author};
                 $.ajax({
-                    url: $("#editSmartphoneForm").attr("action"),
+                    url: $("#editBookForm").attr("action"),
                     data: JSON.stringify(json),
                     type: "POST",
 
@@ -30,6 +30,7 @@
                         $("#bookFromResponse").html(respContent);
                     }
                 });
+                console.log(json);
                 event.preventDefault();
             });
         });
@@ -48,7 +49,7 @@
             <tr>
                 <td>Category:</td>
                 <td>
-                    <select id="category" th:field="*{category}">
+                    <select th:field="*{category}">
                         <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
                     </select>
                 </td>

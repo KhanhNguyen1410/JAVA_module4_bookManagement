@@ -38,7 +38,14 @@
                 var category = $('#category').val();
                 var name = $('#name').val();
                 var author = $('#author').val();// thực hiện lấy dữ liệu từ các input tương ứng
-                var json = { "category" : category, "name" : name, "author": author};// gán các biến vào các trường tương ứng của đối tượng json.
+                var json = {
+                    "category" : {
+                        "id": category,
+                        "name": ""
+                    },
+                    "name" : name,
+                    "author": author
+                };// gán các biến vào các trường tương ứng của đối tượng json.
                 $.ajax({
                     headers: {
                         'Accept': 'application/json',
@@ -46,7 +53,7 @@
                     },
                     type : "POST", // method
                     data: JSON.stringify(json),
-                    url: "/smartphones/createNewPhone", //link này ở RequestMapping
+                    url: "/book/createNewBook", //link này ở RequestMapping
                     success: function(book) { // reponse này ở requestBody
                         var respContent = "";
                         respContent += "<span class='success'>Book was created: [";
@@ -54,8 +61,11 @@
                         respContent += book.name + " : " ;
                         respContent += book.author + "]</span>"
                         $("#BookFromResponse").html(respContent);
+                    },  error: function(){
+                        console.log(this.error);
                     }
                 });
+                console.log(json)
                 event.preventDefault();
             });
         });

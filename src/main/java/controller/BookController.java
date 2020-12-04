@@ -50,9 +50,11 @@ public class BookController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/createNewBook", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/createNewBook", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Book createSmartphone(@RequestBody Book book) {
+        Category category = categoryService.findById(book.getCategory().getId());
+        book.setCategory(category);
         return bookService.save(book);
     }
     @GetMapping("/create")
@@ -64,6 +66,7 @@ public class BookController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Book deleteSmartphone(@PathVariable Long id){
+
         return bookService.remove(id);
     }
 
@@ -79,6 +82,8 @@ public class BookController {
     @ResponseBody
     public Book editSmartphone(@PathVariable Long id, @RequestBody Book book) {
         book.setId(id);
+        Category category = categoryService.findById(book.getCategory().getId());
+        book.setCategory(category);
         return bookService.save(book);
     }
 
