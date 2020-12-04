@@ -74,9 +74,9 @@
     <a th:href="@{/book/list}">Home page</a>
 </div>
 <div>
-    <a th:href="@{'/books'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>
+    <a th:href="@{'/book/list'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>
     <span th:text="${books.number + 1}"></span>/<span th:text="${books.totalPages}"></span>
-    <a th:href="@{'/books'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>
+    <a th:href="@{'/book/list'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>
 </div>
 </body>
 </html>
